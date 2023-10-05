@@ -10,7 +10,7 @@ class Grass: # class의 이름은 명사로, 첫 글자는 대문자로.
     def draw(self): # 잔디를 그려주는 행위를 함.
         self.image.draw(400, 30) # self로 가르켜야함.
 
-    def update(self): pass
+    def update(self): pass # 통일을 위한 dummy 함수이다.
 
 
 class Boy:
@@ -44,24 +44,31 @@ def reset_world():
     global running
     global grass
     global team
+    global world
 
     running = True
+    world = [] # 새로운 객체를 추가할 때 update_world와 render_world의 코드를 수정하지 않아도 됨.
+    # 새로운 객체를 생성하면 world list에만 넣어주면 됨.
+
     grass = Grass() # 파라미터가 들어갈 수 있기 때문에 ()를 해주어야함.
+    world.append(grass)
+
     team = [Boy() for i in range(10)] # List comperhension 이용
+    world += team
 
 
 def update_world():
     grass.update()
-    for boy in team:
-        boy.update()
+    for o in team:
+        o.update()
 
 
 def render_world():
     clear_canvas()
     grass.draw() # clear와 update 사이에 glass를 그려줌.
     # 여러개의 오브젝트를 그릴 때는 그리는 순서가 중요함.
-    for boy in team:
-        boy.draw()
+    for o in team:
+        o.draw()
     update_canvas()
 
 
