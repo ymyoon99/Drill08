@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 
 
 # Game object class here
@@ -14,16 +15,17 @@ class Grass: # class의 이름은 명사로, 첫 글자는 대문자로.
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = random.randint(100, 700), 90
         self.frame = 0
         self.image = load_image('run_animation.png')
 
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.frame = random.randint(0,7)
         self.x += 5 # 오른쪽으로 이동
 
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
 
 def handle_events():
     global running
@@ -41,23 +43,25 @@ open_canvas()
 def reset_world():
     global running
     global grass
-    global boy
+    global team
 
     running = True
     grass = Grass() # 파라미터가 들어갈 수 있기 때문에 ()를 해주어야함.
-    boy = Boy()
+    team = [Boy() for i in range(10)] # List comperhension 이용
 
 
 def update_world():
     grass.update()
-    boy.update()
-    pass
+    for boy in team:
+        boy.update()
 
 
 def render_world():
     clear_canvas()
     grass.draw() # clear와 update 사이에 glass를 그려줌.
-    boy.draw() # 여러개의 오브젝트를 그릴 때는 그리는 순서가 중요함.
+    # 여러개의 오브젝트를 그릴 때는 그리는 순서가 중요함.
+    for boy in team:
+        boy.draw()
     update_canvas()
 
 
