@@ -11,6 +11,20 @@ class Grass: # class의 이름은 명사로, 첫 글자는 대문자로.
 
     def update(self): pass
 
+
+class Boy:
+    def __init__(self):
+        self.x, self.y = 0, 90
+        self.frame = 0
+        self.image = load_image('run_animation.png')
+
+    def update(self):
+        self.frame = (self.frame + 1) % 8
+        self.x += 5 # 오른쪽으로 이동
+
+    def draw(self):
+        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
 def handle_events():
     global running
     events = get_events()
@@ -27,19 +41,23 @@ open_canvas()
 def reset_world():
     global running
     global grass
+    global boy
 
     running = True
     grass = Grass() # 파라미터가 들어갈 수 있기 때문에 ()를 해주어야함.
+    boy = Boy()
 
 
 def update_world():
     grass.update()
+    boy.update()
     pass
 
 
 def render_world():
     clear_canvas()
     grass.draw() # clear와 update 사이에 glass를 그려줌.
+    boy.draw() # 여러개의 오브젝트를 그릴 때는 그리는 순서가 중요함.
     update_canvas()
 
 
